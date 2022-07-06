@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>javascript와 스타일 다루기 - 1</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <script>
+        //자바스크립트로 접근
+        window.onload = function(){
+            let content = document.getElementById("test");
+
+            //color 는인라인이라서 값을 바로 얻을 수 있다.
+            console.log("color = ", content.style.color);
+            
+            // 외부속성은 X 접근해서 값을 얻을 수 없다.
+            console.log("border = ", content.style.border);
+            console.log("margin = ", content.style.margin);
+            console.log("font-size = ", content.style.fontSize);
+            
+            // getComputedStyle 메서드를 통해 내, 외부 속성에 접근할 수 있다.
+            console.log("메서드 / border= ", window.getComputedStyle(content).border);
+            console.log("메서드 / margin = ", window.getComputedStyle(content).margin);
+            console.log("메서드 / font-size = ", window.getComputedStyle(content).fontSize);
+            
+            // 속성이름은 2단어가 연결된다면 낙타표기법으로 표식
+            content.style.fontSize = "12px";
+        }
+
+        // jquery로 스타일 접근
+        $(document).ready(function(){
+            let $content = $("#test");
+
+            // jQuery는 Css()속성만사용하면 내, 외부 속성에 접근할 수 있다.
+            console.log('jQuery / color = ', $content.css('color'));
+            console.log('jQuery / border = ', $content.css('border'));
+            console.log('jQuery / margin = ', $content.css('margin'));
+            console.log('jQuery / font-size = ', $content.css('font-size'));
+
+            // 속성이름에 관계없이 그냥 사용해도 됨(제약조건이 없다)
+            $content.css("fontSize","18px");
+            $content.css("font-size","18px");
+        })
+    </script>
+    <style>
+        div{margin:20px;padding:10px;font-size:26px;border:2px solid red}
+    </style>
+</head>
+<body>
+    <div id="test" class="content" style="color:blue">
+        스타일다루기
+    </div>
+</body>
+</html>

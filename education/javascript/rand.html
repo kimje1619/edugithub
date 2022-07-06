@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery를 활용한 글자의 랜덤 크기 및 랜덤 색상 출력하기</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <script>
+        let cnt = 0;
+        let $panel = null;
+
+        $(document).ready(function(){
+            //초기화
+            init();
+
+            //타이머 시작
+            start(); 
+        })
+
+        function init(){
+            $panel = $("#panel");
+
+        }
+        function start(){
+            setInterval(addTag, 1000);
+        }
+        function addTag(){
+            let $span = $("<span></span>");
+            
+            //스타일 값 생성하기 - 색상 16진수 랜덤, 10px~50px 사이의 글자크기를 구하고 있는 코드
+            let color = "#" + (parseInt(Math.random() * 0xffffff)).toString(16);
+            let fontSize = (10 + parseInt(Math.random() * 40)) + "px";
+            $span.css({
+                color : color,
+                fontSize : fontSize,
+                display : "inline-block"
+            })
+
+            cnt++;
+            $span.html(cnt);
+            $panel.append($span);
+        
+        }
+    </script>
+    <style>
+        #panel{
+           overflow: visible;font-size:20px;width:600px;border:1px solid #f00
+        }
+    </style>
+</head>
+<body>
+    <div id="panel">
+    
+    </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery를 활용한 스타일 값 설정하기 1</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <script>
+        // jquery로 스타일 접근
+        $(document).ready(function(){
+            let $item = $('.menu li.select');
+            $("#exec").click(function(){
+                //폰트 사이즈의 값을 알아내서 숫자로 바꾸고 있는 코드
+                let fontSize = parseInt($item.css("fontSize"));
+                //console.log(fontSize);
+
+                // 폰트크기를 설정하는데, 클릭할때마다 1씩 증가가 된다.
+                $item.css("fontSize", fontSize + 1 );
+            })
+        })
+    </script>
+    <style>
+        body{
+            font-size:20px;
+            font-family: "고딕";
+        }
+        .menu{
+            padding: 10px;
+            list-style: none;
+            border:2px solid #000
+        }
+        .menu li{
+            border:1px solid aqua;
+            margin:10px
+        }
+        li.select{background-color: brown;}
+    </style>
+</head>
+<body>
+    <button id="exec">실행</button>
+   <ul class="menu">
+        <li>메뉴1</li>
+        <li>메뉴2</li>
+        <li class="select">메뉴3</li>
+        <li>메뉴4</li>
+        <li>메뉴5</li> 
+   </ul>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery를 활용한 단일, 다중 클래스 추가하기(removeClass(), toggleClass())</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <script>
+        // jquery로 스타일 접근
+        $(document).ready(function(){
+            // li객체에 클릭 이벤트 등록을 하고 있다.
+           $(".menu li").click(function(){
+                let $item = $(this);
+
+                // 클릭된 li객체가 Select 클래스를 가지고 있지 않다면 select 클래스를 추가하기
+                if($item.hasClass("select") == false){
+                    $item.addClass("select");
+                }else{ 
+                    // select 클래스를 가지고 있다면, 제거하기
+                    $item.removeClass("select");
+                }
+
+                // toggleClass 활용, 플래그 변수처럼 없으면 추가 있으면 삭제
+                $(this).toggleClass("select");
+           })
+        })
+    </script>
+    <style>
+        body{
+            font-size:20px;
+            font-family: "고딕";
+        }
+        .menu{
+            padding: 10px;
+            list-style: none;
+            border:2px solid #000
+        }
+        .menu li{
+            border:1px solid aqua;
+            margin:10px;
+
+        }
+        li.select{background-color: #000;color:#fff;font-size:30px;}
+        li.border{border:5px solid yellow}
+    </style>
+</head>
+<body>
+    <ul class="menu">
+        <li>메뉴1</li>
+        <li>메뉴2</li>
+        <li class="select">메뉴3</li>
+        <li>메뉴4</li>
+        <li>메뉴5</li> 
+    </ul>
+</body>
+</html>

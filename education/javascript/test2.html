@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>javascript와 스타일 다루기 - 2</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <script>
+        //자바스크립트로 여러 스타일 속성값 변경하기
+        window.onload = function(){
+            let content = document.getElementById("test");
+
+            // 스타일의 갯수만큼 코드를 추가해야한다.
+            content.style.fontSize = "8px";
+            // 단위를 생략하면 안된다.
+            // content.style.fontSize = "8";
+            content.style.border = "5px solid #000";
+            content.style.margin = "50px";
+        }
+
+        // jquery로 스타일 접근
+        $(document).ready(function(){
+            let $content = $("#test");
+
+            // 한번에 묶어서 속성값을 변경할 수 있다.
+            $content.css({
+                fontSize : "8px",
+                // 단위가 없어도 적용이 된다.
+                //fontSize : "8",
+                border : "5px solid #f00",
+                margin: "50px"
+            })
+
+        })
+    </script>
+    <style>
+        div{margin:20px;padding:10px;font-size:26px;border:2px solid red}
+    </style>
+</head>
+<body>
+    <div id="test" class="content" style="color:blue">
+        스타일다루기
+    </div>
+</body>
+</html>
