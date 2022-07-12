@@ -163,4 +163,61 @@ $max-width: 980px;
 }
 
 // 9. Condition(조건)
-// if(조건문, 참, 거짓)
+// if(조건문, 참, 거짓) : 조건의 참 거짓에 따라 하나의 값을 반환합니다. JavaScript의 삼항 연산자와 구조가 비슷합니다.
+$width : 555px;
+div{
+  // width:555px;
+  width:if($width > 300px, $width, null);
+}
+
+// @if, @else, @else if : 조건에 따른 분기 처리가 가능합니다. JavaScript의 if-else문과 구조가 비슷합니다.
+$color : orange;
+
+div{
+  @if $color == strawberry{
+    color : #fe2e2e;
+  } @else if $color == orange{
+    color : #fe9a2e;
+  } @else if $color == banana{
+    color : #ffff00;
+  } @else{
+    color : #2a1b0a;
+  }
+}
+
+// 10. Loop(반복)
+
+// @for : 스타일을 반복적으로 출력합니다. JavaScript의 for문과 유사합니다.
+// 다만 through와 to에 따라서 종료 조건이 달라집니다.
+// - from a through b : a부터 b까지 반복(b포함)
+// - from a to b : a부터 b직전까지 반복
+
+// 1부터 3까지 반복(3번 반복)
+@for $i from 1 through 3{
+  // nth-child(1)~(3)
+  .through:nth-child(#{$i}){
+    width: 20px * $i;
+  }
+}
+
+// 1부터 3 직전까지 반복 (2번 반복)
+@for $i from 1 to 3 {
+  // nth-child(1)~(2)
+  .to:nth-child(#{$i}) {
+    width: 20px * $i;
+  }
+}
+
+
+// @each : List또는 Map 데이터를 반복할 때 사용. JavaScript의 for-in/for-of문과 유사합니다.
+// List
+@each $animal in puma, sea-slug, egret, salamander {
+  
+  // .puma-icon {
+  //   background-image: url("/images/puma.png");
+  // }
+
+  .#{$animal}-icon {
+    //background-image: url('/images/#{$animal}.png');
+  }
+}
