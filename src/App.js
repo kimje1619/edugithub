@@ -1,20 +1,8 @@
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 
 // State를 사용하려면 react에서 기본으로 제공하는 훅을 써야한다.
 import {useState} from 'react';
-
-
-//
-// 컴포넌트의 
-// 입력 : props
-// 출력 : return (값이 새로운 UI가 된다)
-
-// 여기서 props과 함께 컴포넌트 함수를 다시 실행해서 새로운 return값을 다시 실행해 준다. 이것이 바로 state
-
-// -props과 state의 차이점
-// Props : 컴포넌트를 사용하는 외부자를 위한 데이터
-// State : 컴포넌트를 만드는 내부자를 위한 데이터
 
 function Article(props){
   return <article>
@@ -57,17 +45,38 @@ function Nav(props){
 </nav>
 }
 
+function Create(props){
+  return <article>
+    <h2>Create</h2>
+    <form onSubmit={event=>{
+      //page reload 막기
+      event.preventDefault();
+
+      //name들의 value값을 가져오기
+      // event.target = form태그
+      const title = event.target.title.value;
+      const body = event.target.body.value;
+      props.onCreate(title, body);
+
+    }}>
+      <p><input type="text" name="title" placeholder="title"/></p>
+      <p><textarea textarea name="body" placeholder="body"></textarea></p>
+      <p><input type="submit" value="create" /></p>
+    </form>
+  </article>
+}
+
 function App() {
   // state를 만든다
   // useState의 인자는 그 state의 초기값이다.
-  //const _mode = useState('WELCOME');
+  // const _mode = useState('WELCOME');
 
   // useState는 배열을 return하고 0번째 원소는 상태의 값을 읽을 때 사용하는 데이터
   // 1번째 데이터는 그 상태의 값을 변경할때 사용하는 함수이다.
   // 즉 state의 값은 0번째 인덱스의 값으로 읽고, state를 바꿀때는 1번째의 함수로 바꿉니다.
-  //const mode = _mode[0];
-  //const setMode = _mode[1];
-  //console.log(_mode)
+  // const mode = _mode[0];
+  // const setMode = _mode[1];
+  // console.log(_mode)
   
   // 상단에 있는 코드(3줄)를 단순하게 변경하면
   const [mode, setMode] = useState('WELCOME');
@@ -75,11 +84,13 @@ function App() {
   // 어떤것을 선택했는지 state로 만들어야 한다. 초기값 없음
   const [id, setId] = useState(null);
 
-  const topics = [
+  // form에서 받아온 결과를 crate하기 위해 topics를 상태로 승격시킨다.
+  // topics : 읽을 떄 사용, setTopics : 변경할 떄 사용 (읽기/쓰기 인터페이스 추가)
+  const [topics, setTopics] = useState([
     {id:1, title:'html', body:'html is ...'},
     {id:2, title:'css', body:'css is ...'},
     {id:3, title:'js', body:'javaScript is ...'}
-  ]
+  ]);
 
   let content = null;
   if(mode === 'WELCOME'){
@@ -95,6 +106,12 @@ function App() {
     }
 
     content = <Article title={title} body={body}></Article>
+  }else if(mode === 'CREATE'){
+    // create컴포넌트를 이용하는 사용자가 생성버튼을 눌렀을때, 후속작업을 할 수 있는 인터페이스 제공
+    content = <Create onCreate={(_title, _body)=>{
+
+      const newTopic = {title:_title, body:_body}
+    }}></Create>
   }
 
   return (
@@ -107,6 +124,10 @@ function App() {
       setId(_id);
     }}></Nav>
     {content}
+    <a href="/Create" onClick={event=>{
+      event.preventDefault();
+      setMode('CREATE');
+    }}>Create</a>
   </div>
   );
 }
