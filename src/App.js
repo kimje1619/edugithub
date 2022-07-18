@@ -8,6 +8,7 @@ function Article(props){
   <h2>{props.title}</h2>
   {props.body}
 </article>
+
 } 
 
 function Header(props){
@@ -59,8 +60,36 @@ function Create(props){
 
     }}>
       <p><input type="text" name="title" placeholder="title"/></p>
-      <p><textarea textarea name="body" placeholder="body"></textarea></p>
+      <p><textarea name="body" placeholder="body"></textarea></p>
       <p><input type="submit" value="create" /></p>
+    </form>
+  </article>
+}
+
+function Update(props){
+  // props를 state로 환승
+  const [title,setTitle] = useState(props.title);
+  const [body,setBody] = useState(props.body);
+  return <article>
+    <h2>Update</h2>
+    <form onSubmit={event=>{
+      //page reload 막기
+      event.preventDefault();
+
+      //name들의 value값을 가져오기
+      // event.target = form태그
+      const title = event.target.title.value;
+      const body = event.target.body.value;
+      props.onUpdate(title, body);
+
+    }}>
+      <p><input type="text" name="title" value={title} onChange={event=>{
+        setTitle(event.target.value);
+      }} placeholder="title"/></p>
+      <p><textarea textarea name="body" value={body} onChange={event=>{
+        setBody(event.target.value);
+      }} placeholder="body"></textarea></p>
+      <p><input type="submit" value="update" /></p>
     </form>
   </article>
 }
@@ -96,6 +125,7 @@ function App() {
   ]);
 
   let content = null;
+  let contextControl = null;
   if(mode === 'WELCOME'){
     content = <Article title="Welcome" body="Hello, WEB"></Article>
   }else if(mode === 'READ'){
@@ -109,6 +139,10 @@ function App() {
     }
 
     content = <Article title={title} body={body}></Article>
+    contextControl = <li><a href={'/update/' + id} onClick={event=>{
+      event.preventDefault();
+      setMode('UPDATE');
+    }}>update</a></li>
   }else if(mode === 'CREATE'){
     // create컴포넌트를 이용하는 사용자가 생성버튼을 눌렀을때, 후속작업을 할 수 있는 인터페이스 제공
     // 사용자가 입력한 title과 body값을 create컴포넌트의 사용자에게 공급할 수 있다.
@@ -124,6 +158,27 @@ function App() {
       setId(nextId);
       setNextId(nextId+1);
     }}></Create>
+  }else if(mode === 'UPDATE'){
+    let title, body = null;
+    for(let i=0; i<topics.length; i++){
+      console.log(topics[i].id, id);
+      if(topics[i].id === id){
+        title = topics[i].title;
+        body = topics[i].body;
+      }
+    }
+    content = <Update title={title} body={body} onUpdate={(title,body)=>{
+      const newTopics = [...topics];
+      const updateTopic = {id:id, title:title, body:body};
+      for(let i = 0; i<newTopics.length;i++){
+        if(newTopics[i].id === id){
+          newTopics[i] = updateTopic;
+          break;
+        }
+      }
+      setTopics(newTopics);
+      setMode('READ');
+    }}></Update>;
   }
 
   return (
@@ -136,10 +191,13 @@ function App() {
       setId(_id);
     }}></Nav>
     {content}
-    <a href="/Create" onClick={event=>{
-      event.preventDefault();
-      setMode('CREATE');
-    }}>Create</a>
+    <ul>
+      <li><a href="/create" onClick={event=>{
+        event.preventDefault();
+        setMode('CREATE');
+      }}>Create</a></li>
+      {contextControl}
+    </ul>
   </div>
   );
 }
