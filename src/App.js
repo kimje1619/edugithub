@@ -139,10 +139,23 @@ function App() {
     }
 
     content = <Article title={title} body={body}></Article>
-    contextControl = <li><a href={'/update/' + id} onClick={event=>{
-      event.preventDefault();
-      setMode('UPDATE');
-    }}>update</a></li>
+    // 태그를 다룰때는, 하나의 태그 안에 있어야한다. <>(제목이 없는 태그)은 그룹핑 하는 용도로 사용하는 빈 태그라고 생각하면 된다. html상으로는 어떤태그로도 존재하지 않음
+    contextControl = <>
+      <li><a href={'/update/' + id} onClick={event=>{
+        event.preventDefault();
+        setMode('UPDATE');
+      }}>update</a></li>
+      <li><button type="button" onClick={()=>{
+        const newTopics = [];
+        for(let i=0; i<topics.length; i++){
+          if(topics[i].id !== id){
+            newTopics.push(topics[i]);
+          }
+        }
+        setTopics(newTopics);
+        setMode("WELCOME");
+      }}>Delete</button></li>
+    </>
   }else if(mode === 'CREATE'){
     // create컴포넌트를 이용하는 사용자가 생성버튼을 눌렀을때, 후속작업을 할 수 있는 인터페이스 제공
     // 사용자가 입력한 title과 body값을 create컴포넌트의 사용자에게 공급할 수 있다.
