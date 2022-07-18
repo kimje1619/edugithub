@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.scss';
 
 // State를 사용하려면 react에서 기본으로 제공하는 훅을 써야한다.
@@ -84,6 +83,10 @@ function App() {
   // 어떤것을 선택했는지 state로 만들어야 한다. 초기값 없음
   const [id, setId] = useState(null);
 
+
+  // 그 다음 원소의 id값을 결정한다.
+  const [nextId, setNextId] = useState(4);
+
   // form에서 받아온 결과를 crate하기 위해 topics를 상태로 승격시킨다.
   // topics : 읽을 떄 사용, setTopics : 변경할 떄 사용 (읽기/쓰기 인터페이스 추가)
   const [topics, setTopics] = useState([
@@ -108,9 +111,18 @@ function App() {
     content = <Article title={title} body={body}></Article>
   }else if(mode === 'CREATE'){
     // create컴포넌트를 이용하는 사용자가 생성버튼을 눌렀을때, 후속작업을 할 수 있는 인터페이스 제공
+    // 사용자가 입력한 title과 body값을 create컴포넌트의 사용자에게 공급할 수 있다.
     content = <Create onCreate={(_title, _body)=>{
-
-      const newTopic = {title:_title, body:_body}
+      // 변수에 새로운 원소를 추가
+      const newTopic = {id:nextId, title:_title, body:_body}
+      // 기존의 데이터의 [...복제본을 생성한다.] 
+      const newTopics = [...topics]
+      // 복제본과 같은지 다른지 판단하고 다르다면 다시 렌더링을 해준다. (같은 데이터면 굳이 다시 렌더링 하지 않는다.)
+      newTopics.push(newTopic);
+      setTopics(newTopics);
+      setMode('READ');
+      setId(nextId);
+      setNextId(nextId+1);
     }}></Create>
   }
 
